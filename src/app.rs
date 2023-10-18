@@ -1,10 +1,16 @@
 use yew::prelude::*;
+use crate::todos::list::TodoList;
+use crate::todos::add::TodoAdd;
+use crate::store::{Store, StoreContext};
 
 #[function_component]
 pub fn App() -> Html {
+    let store = use_reducer(|| Store::default());
+
     html! {
-        <div>
-            <p>{ "Hello World" }</p>
-        </div>
+        <ContextProvider<StoreContext> context={store}>
+            <TodoAdd />
+            <TodoList />
+        </ContextProvider<StoreContext>>
     }
 }
