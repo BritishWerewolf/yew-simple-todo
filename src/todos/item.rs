@@ -3,6 +3,7 @@ use yew::macros::props;
 
 // Create a new type for handling individual items.
 pub type Item = TodoItemProps;
+pub type ItemState = UseStateHandle<Item>;
 impl Item {
     pub fn default() -> Item {
         // This macro will create a new struct using the defaults.

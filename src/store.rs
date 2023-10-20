@@ -1,8 +1,9 @@
 use std::rc::Rc;
-use yew::{Reducible, UseReducerHandle};
+use yew::{Reducible, UseReducerHandle, ContextProvider};
 use crate::todos::item::Item;
 
 pub type StoreContext = UseReducerHandle<Store>;
+pub type StoreProvider = ContextProvider<StoreContext>;
 
 pub enum StoreAction {
     AddItem(Item),
@@ -26,7 +27,7 @@ impl Reducible for Store {
 
     fn reduce(self: Rc<Self>, action: Self::Action) -> Rc<Self> {
         match action {
-            StoreAction::AddItem(item) => {
+            Self::Action::AddItem(item) => {
                 let mut new_items = self.items.clone();
                 new_items.push(Item {
                     completed: item.completed,
