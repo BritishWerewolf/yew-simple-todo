@@ -10,16 +10,18 @@ pub fn TodoList(props: &TodoListProps) -> Html {
     let store = use_context::<StoreContext>().unwrap();
 
     html! {
-        <div>
-            <p>{"Todo list"}</p>
-            { store.items.iter().map(|item| {
-                html! {
-                    <TodoItem
-                        completed={item.completed}
-                        name={item.name.clone()}
-                    />
-                }
-            }).collect::<Html>() }
-        </div>
+        <>
+            <p class="mt-6 mb-2 text-lg font-bold text-center">{"Todo list"}</p>
+            <div class="flex flex-wrap justify-center gap-2">
+                { store.items.iter().map(|item| {
+                    html! {
+                        <TodoItem
+                            completed={item.completed}
+                            name={item.name.clone()}
+                        />
+                    }
+                }).collect::<Html>() }
+            </div>
+        </>
     }
 }

@@ -41,7 +41,7 @@ pub fn TodoItem(props: &TodoItemProps) -> Html {
     } = props;
 
     html! {
-        <div>
+        <div class="w-full p-2 text-gray-900 border border-gray-900 rounded-md md:w-56 dark:text-gray-300 dark:border-gray-300">
             <p>{ "Completed: " }{ &completed }</p>
             <p>{ "Name: " }{ &name }</p>
         </div>

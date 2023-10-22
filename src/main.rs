@@ -1,4 +1,5 @@
 mod app;
+mod dark_mode;
 mod todos;
 mod store;
 

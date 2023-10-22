@@ -69,9 +69,18 @@ pub fn TodoAdd(props: &TodoAddProps) -> Html {
 
 
     html! {
-            <input type="checkbox" name="completed" onchange={onchange_completed} checked={item.completed} />
-            <input type="text" name="name" class="border border-black" onchange={onchange_name} onkeyup={onkeyup_submit} value={item.name.clone()} />
-            <button onclick={onclick_submit}>{"Add item"}</button>
+        <div class="w-full max-w-xs p-2 mx-auto border border-gray-900 rounded-md dark:border-gray-300">
+            <p class="mb-2 text-lg font-bold text-center">{"Add todo"}</p>
+            <div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input name="completed" type="checkbox" value="" class="sr-only peer" onchange={onchange_completed} checked={item.completed} />
+                    <div class="peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 peer-checked:bg-blue-600 w-11 h-6 dark:bg-gray-700 bg-gray-400 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600"></div>
+                    <span class="ml-3 text-sm font-medium">{"Is completed?"}</span>
+                </label>
+                <input type="text" name="name" onchange={onchange_name} onkeyup={onkeyup_submit} value={item.name.clone()} class="bg-gray-50 border border-gray-400 text-sm rounded-t-lg focus:ring-blue-500 inline-block focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-700 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+            </div>
+
+            <button onclick={onclick_submit} class="focus:outline-none text-white dark:text-gray-900 bg-green-700 hover:bg-green-800 focus:ring-4 rounded-t-none focus:ring-green-300 block w-full font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">{"Add item"}</button>
         </div>
     }
 }
