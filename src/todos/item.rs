@@ -1,6 +1,19 @@
 use yew::prelude::*;
 use yew::macros::props;
 
+#[derive(Clone, PartialEq)]
+pub struct ItemAutoIncrementId(usize);
+impl ItemAutoIncrementId {
+    pub fn new() -> ItemAutoIncrementId {
+        ItemAutoIncrementId(0)
+    }
+
+    pub fn next(&mut self) -> usize {
+        self.0 += 1;
+        self.0
+    }
+}
+
 // Create a new type for handling individual items.
 pub type Item = TodoItemProps;
 pub type ItemState = UseStateHandle<Item>;
@@ -27,6 +40,10 @@ impl Item {
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct TodoItemProps {
+    // This is so that we can call "store.dispatch(AddItem)" and not have to
+    // worry about what the ID _should_ be.
+    #[prop_or(0)]
+    pub id: usize,
     #[prop_or(false)]
     pub completed: bool,
     #[prop_or_default]
@@ -36,14 +53,16 @@ pub struct TodoItemProps {
 #[function_component]
 pub fn TodoItem(props: &TodoItemProps) -> Html {
     let TodoItemProps {
+        id,
         completed,
         name,
     } = props;
 
     html! {
         <div class="w-full p-2 text-gray-900 border border-gray-900 rounded-md md:w-56 dark:text-gray-300 dark:border-gray-300">
-            <p>{ "Completed: " }{ &completed }</p>
-            <p>{ "Name: " }{ &name }</p>
+            <p>{"ID: "}{ &id } </p>
+            <p>{"Completed: "}{ &completed }</p>
+            <p>{"Name: "}{ &name }</p>
         </div>
     }
 }

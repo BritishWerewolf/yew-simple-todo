@@ -16,6 +16,7 @@ pub fn TodoList(props: &TodoListProps) -> Html {
                 { store.items.iter().map(|item| {
                     html! {
                         <TodoItem
+                            id={item.id}
                             completed={item.completed}
                             name={item.name.clone()}
                         />

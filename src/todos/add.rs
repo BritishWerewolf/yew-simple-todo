@@ -1,4 +1,4 @@
-use yew::prelude::*;
+use yew::{prelude::*, props};
 use web_sys::HtmlInputElement;
 use crate::todos::item::{Item, ItemState};
 use crate::store::{StoreContext, StoreAction};
@@ -57,7 +57,8 @@ pub fn TodoAdd(props: &TodoAddProps) -> Html {
 
             store.dispatch(StoreAction::AddItem(Item {
                 completed: item.completed,
-                name: item.name.clone()
+                name: item.name.clone(),
+                ..props!(Item {}) // Don't worry about the ID right now!
             }));
 
             Item::reset(&item);

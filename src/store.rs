@@ -1,6 +1,6 @@
 use std::rc::Rc;
 use yew::{Reducible, UseReducerHandle, ContextProvider};
-use crate::{todos::item::Item, dark_mode::dark_class_toggle};
+use crate::{todos::item::{Item, ItemAutoIncrementId}, dark_mode::dark_class_toggle};
 
 pub type StoreContext = UseReducerHandle<Store>;
 pub type StoreProvider = ContextProvider<StoreContext>;
@@ -13,6 +13,7 @@ pub enum StoreAction {
 #[derive(Clone, PartialEq)]
 pub struct Store {
     pub dark_mode: bool,
+    item_id: ItemAutoIncrementId,
     pub items: Vec::<Item>,
 }
 
@@ -20,6 +21,7 @@ impl Default for Store {
     fn default() -> Self {
         Self {
             dark_mode: false,
+            item_id: ItemAutoIncrementId::new(),
             items: Vec::<Item>::new(),
         }
     }
@@ -31,6 +33,7 @@ impl Reducible for Store {
     fn reduce(self: Rc<Self>, action: Self::Action) -> Rc<Self> {
         // Create variables that _might_ be mutated through an action.
         let mut new_dark_mode = self.dark_mode;
+        let mut item_id = self.item_id.clone();
         let mut new_items = self.items.clone();
 
         match action {
@@ -40,6 +43,7 @@ impl Reducible for Store {
             },
             Self::Action::AddItem(item) => {
                 new_items.push(Item {
+                    id: item_id.next(),
                     completed: item.completed,
                     name: item.name,
                 });
@@ -49,6 +53,7 @@ impl Reducible for Store {
         // Recreate a new store with these (potentially changed) variables.
         Store {
             dark_mode: new_dark_mode,
+            item_id: item_id,
             items: new_items,
         }.into()
     }
