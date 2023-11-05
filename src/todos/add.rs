@@ -43,7 +43,7 @@ pub fn TodoAdd(props: &TodoAddProps) -> Html {
         let store = store.clone();
 
         Callback::from(move |e: T| {
-            // Early return if the user presses the carriage return.
+            // Early return if the user doesn't press the carriage return.
             if let Some(keyboard_event) = e.dyn_ref::<KeyboardEvent>() {
                 if keyboard_event.key() != "Enter" && keyboard_event.key_code() != 13 {
                     return;

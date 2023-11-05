@@ -1,6 +1,6 @@
 use std::rc::Rc;
 use yew::{Reducible, UseReducerHandle, ContextProvider};
-use crate::{todos::item::{Item, ItemAutoIncrementId}, dark_mode::dark_class_toggle};
+use crate::{todos::item::{Item, ItemId, ItemAutoIncrementId}, dark_mode::dark_class_toggle};
 
 pub type StoreContext = UseReducerHandle<Store>;
 pub type StoreProvider = ContextProvider<StoreContext>;
@@ -8,6 +8,8 @@ pub type StoreProvider = ContextProvider<StoreContext>;
 pub enum StoreAction {
     DarkModeToggle,
     AddItem(Item),
+    DeleteItem(ItemId),
+    SaveItem(Item),
 }
 
 #[derive(Clone, PartialEq)]
@@ -41,13 +43,30 @@ impl Reducible for Store {
                 new_dark_mode = !new_dark_mode;
                 dark_class_toggle(new_dark_mode).expect("body can add 'dark' class");
             },
+
             Self::Action::AddItem(item) => {
                 new_items.push(Item {
                     id: item_id.next(),
                     completed: item.completed,
                     name: item.name,
                 });
-            }
+            },
+
+            Self::Action::DeleteItem(item_id) => {
+                if let Some(index) = new_items.iter().position(|item| item.id == item_id) {
+                    new_items.remove(index);
+                }
+            },
+
+            Self::Action::SaveItem(item) => {
+                if let Some(index) = new_items.iter().position(|old_item| old_item.id == item.id) {
+                    // We can safely unwrap as we have already checked index.
+                    let old_item = new_items.get_mut(index).unwrap();
+                    old_item.id = item.id;
+                    old_item.completed = item.completed;
+                    old_item.name = item.name;
+                }
+            },
         }
 
         // Recreate a new store with these (potentially changed) variables.
